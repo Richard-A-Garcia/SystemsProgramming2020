@@ -10,34 +10,44 @@
 
 int debug = 0;
 
-int
-main(int argc, char **argv)
+void printFileContents( char file_name[]){
+	char c;
+	char file_name[100] = file_name;
+	FILE *FilePointer;
+	FilePointer = fopen(file_name, "r");
+	
+	if(FilePointer == NULL){
+		printf("Could not open file %c", file_name);
+		return -1;
+	}
+	else{
+		while((c = fgetc(FilePointer)) != EOF){
+			printf("%c", c);
+		}
+	}
+	fclose(FilePointer);
+	return 0;
+	}
+	
+int main(int argc, char **argv)
 {
 	extern char *optarg;
 	extern int optind;
 	int c, err = 0; 
 	int mflag=0, pflag=0, fflag = 0, sflag=0;
 	char *sname = "default_sname", *fname;
-	static char usage[] = "usage: %s [-dmp] -f fname [-s sname] name [name ...]\n";
+	static char usage[] = "usage: %s [-cs] [-f substring] filename\n";
 
-	while ((c = getopt(argc, argv, "df:mps:")) != -1)
+	while ((c = getopt(argc, argv, "csf:")) != -1)
 		switch (c) {
-		case 'd':
+		case 'c':
 			debug = 1;
 			break;
-		case 'm':
+		case 's':
 			mflag = 1;
 			break;
-		case 'p':
-			pflag = 1;
-			break;
 		case 'f':
-			fflag = 1;
-			fname = optarg;
-			break;
-		case 's':
-			sflag = 1;
-         		sname = optarg;
+			pflag = 1;
 			break;
 		case '?':
 			err = 1;
