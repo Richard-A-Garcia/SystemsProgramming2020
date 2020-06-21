@@ -17,10 +17,7 @@ int main(int argc, char **argv)
 	int c, err = 0; 
 	int cflag=0, sflag=0, fflag = 0;
 	char *sname = "default_sname", *fname;
-	static char usage[] = "usage: %s [-cs] [-f substring] filename\n";
-	
-//Added this in for printing
-	 
+	static char usage[] = "usage: %s [-cs] [-f substring] filename\n";	 
 	char ch;
 	FILE *filePointer;
 	
@@ -60,10 +57,9 @@ int main(int argc, char **argv)
 	printf("cflag = %d\n", cflag);
 	printf("sflag = %d\n", sflag);
 	printf("fflag = %d\n", fflag);
-	//DELETE later printf("fname = \"%s\"\n", fname);
-	//DELETE LATERprintf("sname = \"%s\"\n", sname);
+	
  	
-	//Test code to print file contents
+	//This block of code prints the contents of the file 
 	printf("File Name: %s\n", argv[optind]);
 	filePointer = fopen(argv[optind], "r");
 	if (filePointer == NULL)
@@ -71,17 +67,21 @@ int main(int argc, char **argv)
       		printf("Error while opening the file.\n");
       		exit(-1);
    	}
+	printf("File text is : \n");
   	 while((ch = fgetc(filePointer)) != EOF)
       		printf("%c", ch);
-
+	
+	//code to call wordCount function
+//	if(cflag == 1){
+	
    	fclose(filePointer);
 	
-	if (optind < argc)	/* these are the arguments after the command-line options */
-		for (; optind < argc; optind++)
-			printf("argument: \"%s\"\n", argv[optind]);
-	else {
-		printf("no arguments left to process\n");
-	}
-//	fclose(filePointer);
+//	if (optind < argc)	/* these are the arguments after the command-line options */
+//		for (; optind < argc; optind++)
+//			printf("argument: \"%s\"\n", argv[optind]);
+//	else {
+//		printf("no arguments left to process\n");
+//	}
+
 	exit(0);
 }
