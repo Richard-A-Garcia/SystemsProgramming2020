@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+	
 int debug = 0;	
 int main(int argc, char **argv)
 {
@@ -20,7 +20,10 @@ int main(int argc, char **argv)
 	static char usage[] = "usage: %s [-cs] [-f substring] filename\n";	 
 	char ch;
 	FILE *filePointer;
-	
+	FILE *wordCountPointer;
+	int wordcount;
+	typedef enum {false, true} bool;
+	bool isWord = false;
 
 	while ((c = getopt(argc, argv, "csf:")) != -1)
 		switch (c) {
@@ -62,26 +65,26 @@ int main(int argc, char **argv)
 	//This block of code prints the contents of the file 
 	printf("File Name: %s\n", argv[optind]);
 	filePointer = fopen(argv[optind], "r");
+	printf("File Text is : \n");
+	while((ch = fgetc(filePointer)) != EOF){
+      		printf("%c", ch);
+
+	}
+	fclose(filePointer);
+	//This Portion of the code counts the words in the file
+	wordCountPointer = fopen(argv[optind], "r");
 	if (filePointer == NULL)
    	{
-      		printf("Error while opening the file.\n");
+      		printf("File does not exist\n");
       		exit(-1);
    	}
-	printf("File text is : \n");
-  	 while((ch = fgetc(filePointer)) != EOF)
-      		printf("%c", ch);
 	
-	//code to call wordCount function
-//	if(cflag == 1){
-	
-   	fclose(filePointer);
-	
-//	if (optind < argc)	/* these are the arguments after the command-line options */
-//		for (; optind < argc; optind++)
-//			printf("argument: \"%s\"\n", argv[optind]);
-//	else {
-//		printf("no arguments left to process\n");
-//	}
-
+	char currentWord[50];
+	while(fscanf(wordCountPointer, "%s", currentWord ) != EOF){
+		wordcount++;
+	}
+        fclose(wordCountPointer);	
+	printf("Word Count: %d \n", wordcount);
+  	
 	exit(0);
 }
