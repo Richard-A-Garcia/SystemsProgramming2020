@@ -1,8 +1,10 @@
 /*
-	example of command line parsing via getopt
-	usage: getopt [-dmp] -f fname [-s sname] name [name ...]
-
-	Paul Krzyzanowski
+	This program takes command line arguments and prints texts file contents and text file word count
+	Usage: [-cs] [-f substring ] filename 
+	I affirm that I wrote this program myself without any help form any other people or sources from the internet
+	
+	Richard Garcia
+	ID# 5862119
 */
 
 #include <stdio.h>
@@ -17,13 +19,15 @@ int main(int argc, char **argv)
 	int c, err = 0; 
 	int cflag=0, sflag=0, fflag = 0;
 	char *sname = "default_sname", *fname;
+	//Creating the usage statement to print if the user makes an error
 	static char usage[] = "usage: %s [-cs] [-f substring] filename\n";	 
 	char ch;
+	//these file pointers will allow me to print the file to the screen and also get the wordcount
 	FILE *filePointer;
 	FILE *wordCountPointer;
 	int wordcount;
-	typedef enum {false, true} bool;
-	bool isWord = false;
+	
+	
 
 	while ((c = getopt(argc, argv, "csf:")) != -1)
 		switch (c) {
@@ -41,25 +45,6 @@ int main(int argc, char **argv)
 			err = 1;
 			break;
 		}
-	if (fflag == 0) {	/* -f was mandatory */
-		fprintf(stderr, "%s: missing -f option\n", argv[0]);
-		fprintf(stderr, usage, argv[0]);
-		//exit(1);
-	} else if ((optind+1) > argc) {	
-		/* need at least one argument (change +1 to +2 for two, etc. as needeed) */
-
-		printf("optind = %d, argc=%d\n", optind, argc);
-		fprintf(stderr, "%s: missing name\n", argv[0]);
-		fprintf(stderr, usage, argv[0]);
-		exit(1);
-	} else if (err) {
-		fprintf(stderr, usage, argv[0]);
-		exit(1);
-	}
-	/* see what we have REMOVE LATER */
-	printf("cflag = %d\n", cflag);
-	printf("sflag = %d\n", sflag);
-	printf("fflag = %d\n", fflag);
 	
  	
 	//This block of code prints the contents of the file 
@@ -71,7 +56,8 @@ int main(int argc, char **argv)
 
 	}
 	fclose(filePointer);
-	//This Portion of the code counts the words in the file
+
+	//This Portion of the code checks if the file exists
 	wordCountPointer = fopen(argv[optind], "r");
 	if (filePointer == NULL)
    	{
@@ -79,12 +65,15 @@ int main(int argc, char **argv)
       		exit(-1);
    	}
 	
+
+	//This portion of the code performs the word count
+	if(cflag == 1){
 	char currentWord[50];
 	while(fscanf(wordCountPointer, "%s", currentWord ) != EOF){
 		wordcount++;
 	}
         fclose(wordCountPointer);	
 	printf("Word Count: %d \n", wordcount);
-  	
+  	}
 	exit(0);
 }
