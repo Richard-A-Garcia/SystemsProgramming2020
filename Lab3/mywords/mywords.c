@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-	
+#include <string.h>	
 int debug = 0;	
 int main(int argc, char **argv)
 {
@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 	int c, err = 0; 
 	int cflag=0, sflag=0, fflag = 0;
 	char *sname = "default_sname", *fname;
-	//Creating the usage statement to print if the user makes an error
+//Creating the usage statement to print if the user makes an error
 	static char usage[] = "usage: %s [-cs] [-f substring] filename\n";	 
 	char ch;
 	//these file pointers will allow me to print the file to the screen and also get the wordcount
@@ -48,8 +48,11 @@ int main(int argc, char **argv)
 	
  	
 	//This block of code prints the contents of the file 
-
-	filePointer = fopen(argv[optind], "r");
+	char fileWithoutExtension[50];
+	char txtExtension[4] = ".txt";
+	strcpy(fileWithoutExtension, argv[optind]);
+	strcat(fileWithoutExtension, txtExtension); 
+	filePointer = fopen(fileWithoutExtension, "r");
 	printf("File Text is : \n");
 	while((ch = fgetc(filePointer)) != EOF){
       		printf("%c", ch);
@@ -63,17 +66,13 @@ int main(int argc, char **argv)
    	{
       		printf("File does not exist\n");
       		exit(-1);
-   	}
-	
-
-	//This portion of the code performs the word count
-	if(cflag == 1){
+	} //This portion of the code performs the word count if(cflag == 1){
 	char currentWord[50];
 	while(fscanf(wordCountPointer, "%s", currentWord ) != EOF){
 		wordcount++;
 	}
         fclose(wordCountPointer);	
 	printf("Word Count: %d \n", wordcount);
-  	}
+  	
 	exit(0);
-}
+	}
